@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './ContactForm.module.css';
-import { addContact } from 'store/contactsAPI';
+import { addContact } from '../../store/contactsAPI';
 
 function ContactForm() {
   const dispatch = useDispatch();
@@ -20,9 +20,7 @@ function ContactForm() {
 
   const handleSubmit = e => {
     e.preventDefault();
-
     dispatch(addContact({ name, number }));
-
     setName('');
     setNumber('');
   };
@@ -30,7 +28,7 @@ function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <label className={styles.label}>
-        <p>Name</p>
+        Name
         <input
           type="text"
           name="name"
@@ -41,7 +39,7 @@ function ContactForm() {
         />
       </label>
       <label className={styles.label}>
-        <p>Number</p>
+        Number
         <input
           type="tel"
           name="number"

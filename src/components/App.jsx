@@ -7,6 +7,7 @@ import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 import Register from './Register/Register';
 import Login from './Login/Login';
+import UserMenu from './UserMenu/UserMenu';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
           path="/contacts"
           element={
             <>
+              <UserMenu />
               <h1>Phonebook</h1>
               <ContactForm />
               <ContactList />

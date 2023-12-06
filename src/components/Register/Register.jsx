@@ -1,11 +1,15 @@
 // src/components/Register/Register.jsx
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { register } from '../../store/authSlice';
 
 const Register = () => {
-  const [userData, setUserData] = useState({ email: '', password: '' });
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { status, error } = useSelector(state => state.auth);
@@ -20,11 +24,9 @@ const Register = () => {
     dispatch(register(userData))
       .unwrap()
       .then(() => {
-        navigate('/contacts'); // Przekierowanie do listy kontaktów po udanej rejestracji
+        navigate('/contacts');
       })
-      .catch(error => {
-        // Error handling is already set up in the authSlice, so no action needed here
-      });
+      .catch(error => {});
   };
 
   return (
@@ -32,6 +34,16 @@ const Register = () => {
       <h2>Register</h2>
       {status === 'failed' && <p className="error">{error}</p>}
       <form onSubmit={handleSubmit}>
+        <label>
+          Name
+          <input
+            type="text"
+            name="name"
+            value={userData.name}
+            onChange={handleChange}
+            required
+          />
+        </label>
         <label>
           Email
           <input
@@ -56,10 +68,6 @@ const Register = () => {
           {status === 'loading' ? 'Registering...' : 'Register'}
         </button>
       </form>
-      <p>
-        Masz już konto?
-        <Link to="/login"> Zaloguj się!</Link>
-      </p>
     </div>
   );
 };

@@ -1,11 +1,15 @@
 // src/components/Login/Login.jsx
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../../store/authSlice';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
-  const [userData, setUserData] = useState({ email: '', password: '' });
+  const [userData, setUserData] = useState({
+    email: '',
+    password: '',
+  });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { status, error } = useSelector(state => state.auth);
@@ -20,11 +24,9 @@ const Login = () => {
     dispatch(login(userData))
       .unwrap()
       .then(() => {
-        navigate('/contacts'); // Przekierowanie do listy kontaktów po udanym logowaniu
+        navigate('/contacts');
       })
-      .catch(error => {
-        // Error handling is already set up in the authSlice, so no action needed here
-      });
+      .catch(error => {});
   };
 
   return (

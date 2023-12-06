@@ -6,9 +6,13 @@ const API_URL = 'https://connections-api.herokuapp.com';
 
 export const register = createAsyncThunk(
   'auth/register',
-  async (userData, { rejectWithValue }) => {
+  async ({ name, email, password }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/users/signup`, userData);
+      const response = await axios.post(`${API_URL}/users/signup`, {
+        name,
+        email,
+        password,
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -31,11 +35,11 @@ export const login = createAsyncThunk(
 const initialState = {
   user: null,
   token: null,
-  status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
+  status: 'idle',
   error: null,
 };
 
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
@@ -44,6 +48,7 @@ const authSlice = createSlice({
       state.token = null;
       state.status = 'idle';
       state.error = null;
+      localStorage.removeItem('token');
     },
   },
   extraReducers: builder => {
