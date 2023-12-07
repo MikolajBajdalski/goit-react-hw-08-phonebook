@@ -3,7 +3,6 @@ import axios from 'axios';
 
 const API_URL = 'https://connections-api.herokuapp.com';
 
-// Asynchroniczna akcja rejestracji
 export const register = createAsyncThunk(
   'auth/register',
   async ({ name, email, password }, { rejectWithValue }) => {
@@ -20,7 +19,6 @@ export const register = createAsyncThunk(
   }
 );
 
-// Asynchroniczna akcja logowania
 export const login = createAsyncThunk(
   'auth/login',
   async (userData, { rejectWithValue }) => {
@@ -33,7 +31,6 @@ export const login = createAsyncThunk(
   }
 );
 
-// Asynchroniczna akcja wylogowania
 export const logout = createAsyncThunk(
   'auth/logout',
   async (_, { getState, rejectWithValue }) => {

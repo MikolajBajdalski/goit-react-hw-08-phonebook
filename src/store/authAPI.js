@@ -1,4 +1,3 @@
-// src/store/authAPI.js
 import axios from 'axios';
 
 const API_URL = 'https://connections-api.herokuapp.com';
