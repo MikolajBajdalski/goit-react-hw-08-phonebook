@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../store/authSlice';
-import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [userData, setUserData] = useState({
