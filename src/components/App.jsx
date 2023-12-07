@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import NavigationBar from './NavigationBar/NavigationBar';
+import PrivateRoute from './PrivateRoute/PrivateRoute';
 import { fetchContacts } from '../store/contactsAPI';
-import ContactForm from './ContactForm/ContactForm';
-import ContactList from './ContactList/ContactList';
-import Filter from './Filter/Filter';
+
 import Register from './Register/Register';
 import Login from './Login/Login';
-import UserMenu from './UserMenu/UserMenu';
+import Contacts from './Contacts/Contacts';
 
 function App() {
   const dispatch = useDispatch();
@@ -18,20 +18,16 @@ function App() {
 
   return (
     <Router>
+      <NavigationBar />
       <Routes>
-        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route
           path="/contacts"
           element={
-            <>
-              <UserMenu />
-              <h1>Phonebook</h1>
-              <ContactForm />
-              <ContactList />
-              <Filter />
-            </>
+            <PrivateRoute>
+              <Contacts />
+            </PrivateRoute>
           }
         />
       </Routes>

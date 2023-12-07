@@ -1,9 +1,9 @@
-// src/store/authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_URL = 'https://connections-api.herokuapp.com';
 
+// Asynchroniczna akcja rejestracji
 export const register = createAsyncThunk(
   'auth/register',
   async ({ name, email, password }, { rejectWithValue }) => {
@@ -20,11 +20,34 @@ export const register = createAsyncThunk(
   }
 );
 
+// Asynchroniczna akcja logowania
 export const login = createAsyncThunk(
   'auth/login',
   async (userData, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${API_URL}/users/login`, userData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Asynchroniczna akcja wylogowania
+export const logout = createAsyncThunk(
+  'auth/logout',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const token = getState().auth.token;
+      const response = await axios.post(
+        `${API_URL}/users/logout`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -57,29 +80,35 @@ export const authSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(register.fulfilled, (state, action) => {
+        state.status = 'succeeded';
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.status = 'succeeded';
       })
       .addCase(register.rejected, (state, action) => {
-        state.error = action.payload.message;
         state.status = 'failed';
+        state.error = action.payload;
       })
       .addCase(login.pending, state => {
         state.status = 'loading';
       })
       .addCase(login.fulfilled, (state, action) => {
+        state.status = 'succeeded';
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.status = 'succeeded';
       })
       .addCase(login.rejected, (state, action) => {
-        state.error = action.payload.message;
         state.status = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(logout.fulfilled, state => {
+        state.user = null;
+        state.token = null;
+        state.status = 'idle';
+        state.error = null;
       });
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { resetAuthState } = authSlice.actions;
 
 export default authSlice.reducer;

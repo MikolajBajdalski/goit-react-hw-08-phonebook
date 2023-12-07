@@ -58,10 +58,6 @@ const Login = () => {
           {status === 'loading' ? 'Logging in...' : 'Login'}
         </button>
       </form>
-      <p>
-        Nie masz konta?
-        <Link to="/register"> Zarejestruj się!</Link>
-      </p>
     </div>
   );
 };
