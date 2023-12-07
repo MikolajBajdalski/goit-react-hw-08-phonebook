@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './ContactForm.module.css';
 import { addContact } from '../../store/contactsAPI';
 
 function ContactForm() {
   const dispatch = useDispatch();
+
+  // Pobieranie userId ze stanu za pomocą useSelector
+  const userId = useSelector(state => state.auth.user?.id);
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -20,9 +23,14 @@ function ContactForm() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(addContact({ name, number }));
-    setName('');
-    setNumber('');
+    console.log('Current user ID from state:', userId); // Logowanie do debugowania
+    if (userId) {
+      dispatch(addContact({ userId, contact: { name, number } }));
+      setName('');
+      setNumber('');
+    } else {
+      console.error('User ID is undefined. User might not be logged in.');
+    }
   };
 
   return (
